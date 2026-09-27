@@ -1,11 +1,16 @@
 # Fly.io config — https://fly.io/docs/reference/configuration/
 #
-# Deploy:  fly launch --no-deploy  →  fly volumes create portfolio_data --size 1
-#          fly secrets set ADMIN_PASSWORD='your-password'
+# Deploy:  fly launch --no-deploy
+#          fly secrets set ADMIN_PASSWORD='YOUR-PASSWORD-HERE' \
+#                       GITHUB_TOKEN='YOUR-TOKEN' \
+#                       GITHUB_REPO='charlesabhishekreddy-spec/3d-Portfolio' \
+#                       GITHUB_BRANCH='arena/01a0e32e-3d-portfolio'
 #          fly deploy
 #
-# A Fly volume is REQUIRED. Without it, admin edits and uploaded images are
-# lost on every machine replacement. Volumes are billed per GB-month.
+# This is the free configuration. Content and images are stored in the GitHub
+# repository (see storage.js), so no volume is needed and Fly's $5 trial credit
+# covers light use. The volume below is optional; add it only if you would
+# rather keep local files.
 app = "charles-portfolio"
 primary_region = "bom" # Mumbai — closest to you in India
 
@@ -15,12 +20,14 @@ primary_region = "bom" # Mumbai — closest to you in India
 [env]
   NODE_ENV = "production"
   PORT = "3000"
-  DATA_DIR = "/data/content"
-  UPLOAD_DIR = "/data/uploads"
+  DATA_DIR = "/tmp/portfolio-data"
+  UPLOAD_DIR = "/tmp/portfolio-uploads"
 
-[[mounts]]
-  source = "portfolio_data"
-  destination = "/data"
+# Optional persistent volume. Uncomment after `fly volumes create portfolio_data
+# --size 1 --region bom` if you want local files kept as well.
+# [[mounts]]
+#   source = "portfolio_data"
+#   destination = "/data"
 
 [http_service]
   internal_port = 3000

@@ -1,16 +1,17 @@
 # Render blueprint — https://render.com/docs/blueprint-spec
 #
-# Deploy: push this branch, then in Render choose New → Blueprint and point it
+# DEPLOY: push the branch, then in Render choose New → Blueprint and point it
 # at this repository. Render reads this file and creates the service for you.
 #
-# The disk is REQUIRED. Without it, admin edits and uploaded images are lost
-# on every deploy and every restart. Persistent disks are available on paid
-# instances (Starter $7/mo is the cheapest with a disk).
+# This is the FREE configuration. It uses no disk, which is only safe because
+# content and images are stored in the GitHub repository (see storage.js) rather
+# than on local disk. Free services sleep after 15 idle minutes and take roughly
+# a minute to wake on the next visit.
 services:
   - type: web
     name: charles-portfolio
     runtime: node
-    plan: starter
+    plan: free
     region: singapore
     branch: arena/01a0e32e-3d-portfolio
     buildCommand: npm ci && npm run build
@@ -21,14 +22,20 @@ services:
         value: "22.16.0"
       - key: NODE_ENV
         value: production
-      - key: DATA_DIR
-        value: /var/data/content
-      - key: UPLOAD_DIR
-        value: /var/data/uploads
-      # Set this yourself in the Render dashboard. Never commit a password.
+      # ── Your private studio password. Set this in the Render dashboard.
       - key: ADMIN_PASSWORD
         sync: false
-    disk:
-      name: portfolio-data
-      mountPath: /var/data
-      sizeGB: 1
+      # ── GitHub-backed storage (replaces the disk).
+      # Create a fine-grained token: repo → 3d-Portfolio → Contents: Read and
+      # write. No other permissions. Paste it into the dashboard when prompted.
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_REPO
+        value: charlesabhishekreddy-spec/3d-Portfolio
+      - key: GITHUB_BRANCH
+        value: arena/01a0e32e-3d-portfolio
+      # Local disk is a cache only; nothing important is stored here.
+      - key: DATA_DIR
+        value: /tmp/portfolio-data
+      - key: UPLOAD_DIR
+        value: /tmp/portfolio-uploads

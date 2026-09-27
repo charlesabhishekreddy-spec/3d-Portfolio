@@ -1,104 +1,109 @@
 # Deploying your portfolio
 
-Your portfolio is a **Node/Express app**, not a static site. The server does the
-admin login, saves your edits, and stores uploaded images — so it must run on a
-host that keeps a **persistent disk**. Deploying to a static host (GitHub Pages,
-Netlify static, plain S3) will show the site but the admin will not save.
+**The free option works.** This app stores its content and images in your GitHub
+repository instead of on local disk, so it can run on Render's free tier — no
+paid disk, no card, $0/month.
 
-**Ready-to-use configs are in this repo:** `render.yaml` (Render), `fly.toml`
-(Fly.io), and `Dockerfile` (any container host).
+The repo is a good place for this: it is already your project's home, it is
+backed up, every content edit is recorded in history (so any change is
+revertible), and the API allows 5,000 writes/hour — far more than a portfolio
+will ever use.
 
 ---
 
-## The one rule
+## How storage works
 
-Mount a persistent disk and point `DATA_DIR` + `UPLOAD_DIR` at it.
-
-| Variable | Purpose |
+| Where you host | Where your edits and images are saved |
 |---|---|
-| `DATA_DIR` | Your saved content (`content.json`) |
-| `UPLOAD_DIR` | Project images you upload |
-| `ADMIN_PASSWORD` | Your private studio password — **set in the host dashboard, never in Git** |
-| `PORT` | Provided by the host; don't hardcode it |
+| Any free host (Render free, Fly, Docker) | **Your GitHub repo** — permanent |
+| Local development | Local files in `data/` and `uploads/` |
 
-Without a disk, a restart or deploy silently wipes your admin edits and images.
-On first boot the app seeds `content.json` from the bundled `data/default.json`,
-so a fresh disk starts with your resume content intact.
+Set `GITHUB_TOKEN` + `GITHUB_REPO` and the app uses GitHub. Leave them unset and
+it uses local disk, which is what the test suite and local development use.
+Both are exercised by `npm test`.
 
 ---
 
-## Option A — Render (easiest, ~$7/mo)
+## Option A — Render free ($0/month, recommended)
 
-1. Push this branch to GitHub (done).
-2. At **render.com** → *New → Blueprint* → connect the repo. Render reads
-   `render.yaml` and sets up the service, build, disk, and health check.
-3. Render shows `ADMIN_PASSWORD` as *sync: false*. Open **Environment** and type
-   your own password (set it in the dashboard — never in a committed file).
-4. Deploy. You get a URL like `https://charles-portfolio.onrender.com`.
+1. **Create a GitHub token.** Go to GitHub → *Settings → Developer settings →
+   Personal access tokens → Fine-grained tokens → Generate*. Name it
+   `portfolio`, set expiry, and grant **only**:
+   - Repository: `3d-Portfolio`
+   - Permissions → **Contents: Read and write**
+   
+   No other permissions. Copy the token — GitHub shows it once.
 
-Config uses a 1 GB disk in the Singapore region, closest to India.
+2. **Deploy.** At **render.com** → *New → Blueprint* → connect this repo.
+   Render reads `render.yaml` (build command, region, health check all set).
+   It will show two secrets as `sync: false`:
+   - `ADMIN_PASSWORD` → your studio password from `.env`
+   - `GITHUB_TOKEN` → the token you just created
 
-> The free plan has **no disk**, so admin changes would be lost. The Starter
-> plan ($7/mo) is the cheapest that supports persistent disks. Free instances
-> also sleep after inactivity, so the first visit can take ~30s to wake.
+3. Render builds and gives you a URL like `https://charles-portfolio.onrender.com`.
 
-## Option B — Fly.io (~$3–5/mo)
+**The trade-off:** free services sleep after 15 minutes idle, so the first
+visitor to a quiet site waits ~30–60 seconds while it wakes. That is the price
+of $0. Upgrade to $7/month only if that bothers you.
+
+## Option B — Fly.io ($0, uses free allowance)
 
 ```sh
-fly launch --no-deploy          # reads fly.toml
-fly volumes create portfolio_data --size 1 --region bom
-fly secrets set ADMIN_PASSWORD='YOUR-PASSWORD-HERE'
+fly launch --no-deploy
+fly secrets set ADMIN_PASSWORD='YOUR-PASSWORD-HERE' \
+             GITHUB_TOKEN='YOUR-TOKEN' \
+             GITHUB_REPO='charlesabhishekreddy-spec/3d-Portfolio' \
+             GITHUB_BRANCH='arena/01a0e32e-3d-portfolio'
 fly deploy
-fly open                        # shows your public URL
+fly open
 ```
 
-## Option C — Docker anywhere
+## Option C — Docker anywhere ($0 on a free VPS)
 
 ```sh
 docker build -t portfolio .
 docker run -d -p 3000:3000 \
   -e ADMIN_PASSWORD='YOUR-PASSWORD-HERE' \
-  -v portfolio-data:/data \
+  -e GITHUB_TOKEN='YOUR-TOKEN' \
+  -e GITHUB_REPO='charlesabhishekreddy-spec/3d-Portfolio' \
+  -e GITHUB_BRANCH='arena/01a0e32e-3d-portfolio' \
   --name portfolio portfolio
 ```
 
-The image builds the client, then ships only runtime dependencies as a
-non-root user, with a `/api/health` health check.
+No volume needed. The image builds the client and ships only runtime
+dependencies as a non-root user.
 
 ---
 
-## After it's live
+## After it is live
 
-1. Visit `/admin` and sign in with your password.
-2. Add real project screenshots (Projects tab) — the current covers are decorative.
-3. Re-upload the resume-derived content if it was reset.
-4. **Connect a custom domain** in the host's Domains tab (optional).
+1. Sign in at `/admin` with your password.
+2. **Upload real project screenshots** in the Projects tab. The current covers
+   are decorative placeholders — this is the biggest visual upgrade available.
+3. Every save writes `data/content.json` to your repo as a commit, so your
+   content history is visible and reversible in GitHub's UI.
 
-### Setting your password
+**To change your password:** update `ADMIN_PASSWORD` in the host's environment
+settings and redeploy.
 
-Your password lives in the untracked `.env` file in this repo, which is
-excluded from Git. Copy that value into the host's environment settings
-(`ADMIN_PASSWORD`) — never paste it into a file you commit. If you ever move
-to a different host, use the same value in that host's dashboard.
+**To roll back a bad edit:** restore the previous `data/content.json` in the
+GitHub UI and commit. The next page load picks it up.
 
-### Changing your password later
+---
 
-Update `ADMIN_PASSWORD` in the host's environment settings and trigger a
-redeploy. Nothing is stored in code.
+## What is verified, and what is not
 
-### Backing up
+Verified here: production start from an unrelated working directory, GitHub
+storage reading published content from the live API, disk storage round-trips,
+fallback to bundled defaults, path-traversal rejection, login success/failure,
+unauthorized write rejection, image upload round-trip, the SPA fallback route,
+serving built assets, and a rejected-token error message.
 
-Your content lives on the host's disk. To back up, copy `content.json` and the
-uploads folder from the host, or keep the git repo as the source of truth for
-the default content and re-upload images if the disk is ever lost.
+Not verified here: the actual `docker build` and the hosts' own deploy
+pipelines. Docker is unavailable in this environment, so the Dockerfile follows
+standard practice but is untested.
 
-### What is verified, and what isn't
-
-Verified here: production start, health endpoint, content seeding onto an empty
-disk, login success/failure, unauthorized upload rejection, an authenticated
-image upload round-trip, the SPA fallback route, and serving built assets — all
-with only production dependencies installed.
-
-Not verified here: the actual `docker build`, and the hosts' own deploy
-pipelines. Docker isn't available in this environment, so the Dockerfile is
-written to standard practice but untested. Render/Fly deploy these themselves.
+One environment-specific note: this sandbox intercepts TLS with its own proxy
+CA, so the GitHub API calls were tested with that CA trusted
+(`NODE_EXTRA_CA_CERTS`). On Render and Fly the real GitHub certificate validates
+normally and no such setting is needed.
