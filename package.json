@@ -9,14 +9,16 @@
     "test": "node --test tests/*.test.js"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "latest",
     "express": "^5.1.0",
     "express-rate-limit": "^8.1.0",
     "lucide-react": "latest",
     "multer": "^2.0.2",
     "react": "latest",
     "react-dom": "latest",
-    "three": "^0.180.0",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
     "vite": "latest"
   }
 }

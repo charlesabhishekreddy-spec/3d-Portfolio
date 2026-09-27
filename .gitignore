@@ -4,3 +4,4 @@ dist/
 data/content.json
 uploads/*
 !uploads/.gitkeep
+/tmp/

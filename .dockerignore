@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.github
+.env
+*.log
+tests
+uploads/*
+!uploads/.gitkeep
+data/content.json

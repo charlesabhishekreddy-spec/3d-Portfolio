@@ -30,6 +30,8 @@ npm run build
 npm start
 ```
 
+Host it behind HTTPS with persistent disk storage. Do not deploy as a static-only website: authentication, publishing, and uploads require the server. See **DEPLOY.md** for Render, Fly.io, and Docker instructions.
+
 Host the Node server behind HTTPS with persistent disk storage. Do not deploy as a static-only website: authentication, publishing, and uploads require the server. Configure ADMIN_PASSWORD as a private deployment environment variable, never a client-side variable. A live preview is not a permanent deployment.
 
 ## Verification

@@ -1,0 +1,34 @@
+# Render blueprint — https://render.com/docs/blueprint-spec
+#
+# Deploy: push this branch, then in Render choose New → Blueprint and point it
+# at this repository. Render reads this file and creates the service for you.
+#
+# The disk is REQUIRED. Without it, admin edits and uploaded images are lost
+# on every deploy and every restart. Persistent disks are available on paid
+# instances (Starter $7/mo is the cheapest with a disk).
+services:
+  - type: web
+    name: charles-portfolio
+    runtime: node
+    plan: starter
+    region: singapore
+    branch: arena/01a0e32e-3d-portfolio
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22.16.0"
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data/content
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      # Set this yourself in the Render dashboard. Never commit a password.
+      - key: ADMIN_PASSWORD
+        sync: false
+    disk:
+      name: portfolio-data
+      mountPath: /var/data
+      sizeGB: 1
