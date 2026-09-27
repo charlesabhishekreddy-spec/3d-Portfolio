@@ -6,7 +6,9 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Must include devDependencies: the client is built in this stage and Vite is a
+# devDependency. NODE_ENV is deliberately not set here for the same reason.
+RUN npm ci --include=dev
 COPY . .
 RUN npm run build && npm prune --omit=dev
 

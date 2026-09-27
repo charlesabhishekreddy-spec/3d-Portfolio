@@ -43,6 +43,15 @@ that is a repository change only the owner should make.
 
 ---
 
+### A note on `NODE_ENV=production`
+
+The build must run `npm ci --include=dev`. Setting `NODE_ENV=production` (which
+this app does, for the runtime) makes plain `npm ci` skip devDependencies —
+including Vite — so the build dies with `sh: 1: vite: not found`. Build tools
+have to be installed *to* build. `render.yaml` already does this.
+
+---
+
 ## Option A — Render free ($0/month, recommended)
 
 1. **Create a GitHub token.** Go to GitHub → *Settings → Developer settings →

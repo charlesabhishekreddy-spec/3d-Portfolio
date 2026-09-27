@@ -21,7 +21,10 @@ services:
     plan: free
     region: singapore
     branch: arena/01a0e32e-3d-portfolio
-    buildCommand: npm ci && npm run build
+    # --include=dev is required: NODE_ENV=production below makes npm ci skip
+    # devDependencies, which removes the vite binary and fails the build with
+    # "sh: 1: vite: not found". Build-time tools must be installed to build.
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:

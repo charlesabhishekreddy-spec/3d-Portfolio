@@ -16,6 +16,9 @@ primary_region = "bom" # Mumbai — closest to you in India
 
 [build]
   dockerfile = "Dockerfile"
+  # NODE_ENV=production in the runtime image would make npm ci skip the
+  # devDependencies (Vite) needed to build the client.
+  node_version = "22"
 
 [env]
   NODE_ENV = "production"
