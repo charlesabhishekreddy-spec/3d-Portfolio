@@ -1,0 +1,160 @@
+{
+  "name": "Charles",
+  "role": "Aspiring Software Engineer · AI & Data Science Undergraduate",
+  "headline": "Curious by nature.\nAn engineer in the making.",
+  "description": "I’m Charles—an AI & Data Science undergraduate building intelligent applications, full-stack experiences, and more secure software.",
+  "available": true,
+  "sampleContent": false,
+  "email": "",
+  "about": "I’m Undela Charles Abhishek Reddy, an AI & Data Science undergraduate at Jansons Institute of Technology. My hands-on experience spans software development, AI/ML, full-stack web applications, enterprise platforms, and cybersecurity. From diagnosing plant diseases with computer vision to exploring network threats, I enjoy turning technical ideas into useful applications. I’ve worked across design, development, testing, debugging, and automation through internships and project-based learning.",
+  "skills": [
+    "Python",
+    "Java",
+    "JavaScript",
+    "PHP",
+    "SQL",
+    "React",
+    "Node.js",
+    "Flask",
+    "HTML5 & CSS3",
+    "MySQL",
+    "Machine Learning",
+    "TensorFlow",
+    "Computer Vision",
+    "LLM Workflows",
+    "Microsoft Power Platform",
+    "Power Apps",
+    "Power Automate",
+    "Salesforce CRM",
+    "AWS",
+    "OWASP Top 10",
+    "Web Application Security",
+    "Vulnerability Assessment",
+    "Penetration Testing",
+    "Network Security",
+    "Git & GitHub",
+    "Kali Linux",
+    "Nmap",
+    "Burp Suite",
+    "Metasploit",
+    "Wireshark",
+    "Blender"
+  ],
+  "projects": [
+    {
+      "id": "aerovanta",
+      "title": "Aerovanta",
+      "category": "AI-powered plant disease diagnosis",
+      "year": "2024 — Present",
+      "description": "An AI-driven platform for image-based plant disease detection, infection assessment, and personalized treatment recommendations. Integrates AI chatbot assistance, crop timelines, activity logging, treatment scheduling, notifications, and historical farm records.\n\nTechnologies: TensorFlow, Computer Vision, AI.",
+      "image": "",
+      "color": "#d6ded5",
+      "url": "",
+      "type": "orb"
+    },
+    {
+      "id": "delivery-route",
+      "title": "Autonomous Delivery Route Planner",
+      "category": "Intelligent routing · Python",
+      "year": "2025 — 2026",
+      "description": "An adaptive route-planning system for dynamic environments with real-time obstacle handling. Implements A* and D* algorithms for optimal pathfinding and intelligent rerouting under changing conditions.\n\nTechnologies: Python, A*, D* algorithms.",
+      "image": "",
+      "color": "#cfcaea",
+      "url": "",
+      "type": "wave"
+    },
+    {
+      "id": "code-review",
+      "title": "AI-Assisted Secure Code Review",
+      "category": "Cybersecurity · Full-stack development",
+      "year": "2026",
+      "description": "A static-analysis platform to detect insecure APIs, exposed credentials, and input-validation vulnerabilities. Implements severity scoring, line-level vulnerability mapping, and contextual remediation recommendations. Achieved 4th place among 60 teams in a national cybersecurity hackathon.\n\nTechnologies: Python, full-stack development, OWASP Top 10.",
+      "image": "",
+      "color": "#e5d9cd",
+      "url": "",
+      "type": "arch"
+    },
+    {
+      "id": "task-management",
+      "title": "Multi-Tenant Task Management",
+      "category": "Full-stack platform · Access control",
+      "year": "2026",
+      "description": "A production-ready multi-tenant task management platform with secure organization-level data isolation and JWT-based authentication. Implements Admin/Member role-based access control, task assignment workflows, and refresh-token authentication. Includes audit logging and a responsive React dashboard for task lifecycle management, user administration, and activity traceability across organizations.",
+      "image": "",
+      "color": "#d4dee7",
+      "url": "",
+      "type": "arch"
+    }
+  ],
+  "fullName": "Undela Charles Abhishek Reddy",
+  "location": "Nellore, Andhra Pradesh, India",
+  "github": "https://github.com/charlesabhishekreddy-spec",
+  "linkedin": "",
+  "experience": [
+    {
+      "title": "Full Stack Web Development Intern",
+      "organization": "National Small Industries Corporation (NSIC)",
+      "period": "Jun 2026 — Jul 2026",
+      "location": "Chennai, Tamil Nadu",
+      "details": "Developed 4+ responsive web applications using HTML, CSS, and JavaScript. Implemented DOM manipulation, event handling, dynamic content updates, and client-side form validation. Applied responsive design, testing, debugging, and cross-browser compatibility practices."
+    },
+    {
+      "title": "Cybersecurity & Ethical Hacking Intern",
+      "organization": "Tamizhan Skills — RISE Internship Program",
+      "period": "Jun 2026",
+      "location": "Remote",
+      "details": "Conducted web application and network security assessments using Kali Linux, Nmap, Burp Suite, OWASP ZAP, and Metasploit. Performed reconnaissance, vulnerability scanning, OWASP Top 10 testing, risk analysis, and remediation reporting. Participated in penetration-testing and red-team simulation exercises following ethical hacking methodologies."
+    },
+    {
+      "title": "Microsoft Power Apps Developer & Salesforce CRM Application Developer",
+      "organization": "ELGI — Digital Innovation Dojo",
+      "period": "Dec 2025 — Apr 2026",
+      "location": "Coimbatore, Tamil Nadu",
+      "details": "Developed enterprise applications and digital transformation solutions using Microsoft Power Platform, Salesforce, and modern web technologies. Engineered an immersive VR platform that reduced client onboarding demonstration time by 30%. Contributed across application design, prototyping, development, optimization, and deployment, supporting CRM-driven architecture and automation."
+    },
+    {
+      "title": "AI/ML Intern",
+      "organization": "Infosys Springboard",
+      "period": "Sep 2025 — Nov 2025",
+      "location": "Remote",
+      "details": "Developed SentinelNet, an AI-powered Network Intrusion Detection System designed to analyze network traffic and identify anomalous activity. Applied machine-learning techniques to support network threat detection and classification. Strengthened practical skills in AI/ML, cybersecurity, data analysis, and intelligent system development."
+    },
+    {
+      "title": "Junior Full-Stack Web Development Intern",
+      "organization": "Digital Kuppam",
+      "period": "Jun 2025 — Jul 2025",
+      "location": "Kuppam, Andhra Pradesh",
+      "details": "Developed interactive web applications using PHP, Python, MySQL, HTML5, CSS, and JavaScript. Integrated APIs and automated email notifications using EmailJS to streamline registration and communication workflows. Supported responsive development, testing, debugging, and application maintenance in a cross-functional team."
+    }
+  ],
+  "education": [
+    {
+      "title": "B.Tech in Artificial Intelligence & Data Science (Honours)",
+      "organization": "Jansons Institute of Technology",
+      "period": "Aug 2024 — Jun 2028",
+      "location": "Coimbatore, Tamil Nadu",
+      "details": "CGPA: 8.44/10"
+    },
+    {
+      "title": "Senior Secondary Education (10+2)",
+      "organization": "PM Shri Jawahar Navodaya Vidyalaya",
+      "period": "Jul 2017 — Mar 2024",
+      "location": "Krishnapuram, Nellore, Andhra Pradesh",
+      "details": "X: 83% · XII: 80%"
+    }
+  ],
+  "certifications": [
+    "AWS Certified Cloud Practitioner",
+    "Tata iQ — Generative AI Strategy & Analytics, Forage",
+    "Deloitte Australia — Cyber Job Simulation, Forage",
+    "Infosys Springboard — AI & Cloud Technologies",
+    "NVIDIA AI & Deep Learning Certifications",
+    "Generative AI — LinkedIn Learning"
+  ],
+  "languages": [
+    "English",
+    "Telugu",
+    "Hindi",
+    "Tamil"
+  ]
+}
