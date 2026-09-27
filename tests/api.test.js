@@ -31,3 +31,21 @@ test('portfolio content and private admin lifecycle',async()=>{
   assert.equal((await api('logout',{method:'POST',headers})).status,200);assert.equal((await api('session',{headers})).status,401);
  }finally{server.kill();await new Promise(resolve=>server.once('exit',resolve));await rm(dir,{recursive:true,force:true});}
 });
+
+test('build requires a branch that contains the app', async () => {
+  const {execFileSync} = await import('node:child_process');
+  const root = process.cwd();
+  // A host builds whatever branch is configured. If that branch has no
+  // package.json the build dies with a bare npm ENOENT. Detect that here so the
+  // cause is known up front rather than only in a host's build log.
+  const files = execFileSync('git', ['ls-tree', '-r', '--name-only', 'HEAD'], {cwd: root, encoding: 'utf8'});
+  assert.ok(files.includes('package.json'), 'tracked branch must contain package.json or every host build fails with ENOENT');
+  assert.ok(files.includes('server.js'), 'tracked branch must contain server.js');
+  assert.ok(files.includes('render.yaml'), 'tracked branch must contain render.yaml');
+  const blueprint = JSON.parse(JSON.stringify({}));
+  const yaml = await import('node:fs/promises').then(fs => fs.readFile(root + '/render.yaml', 'utf8'));
+  const branch = yaml.match(/^\s*branch:\s*(\S+)/m)?.[1];
+  assert.ok(branch, 'render.yaml must pin the branch to build');
+  assert.ok(!branch.includes('main') || yaml.includes('THE BRANCH MATTERS'), 'building main is only safe if documented');
+  assert.equal(blueprint.services, undefined);
+});

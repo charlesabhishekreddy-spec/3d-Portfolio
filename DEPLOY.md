@@ -24,6 +24,25 @@ Both are exercised by `npm test`.
 
 ---
 
+## ⚠️ Read this first: pick the right branch
+
+This repository's default branch, `main`, contains **only a README**. The
+application lives on `arena/01a0e32e-3d-portfolio`. A host that builds `main`
+fails immediately with:
+
+```
+npm error enoent Could not read package.json
+```
+
+**If you see that error, nothing is wrong with the code.** In Render open
+**Settings → Build & Deploy → Branch**, choose `arena/01a0e32e-3d-portfolio`,
+press **Save**, then **Manual Deploy → Deploy latest commit**.
+
+Long term, merging the session branch into `main` makes this a non-issue — but
+that is a repository change only the owner should make.
+
+---
+
 ## Option A — Render free ($0/month, recommended)
 
 1. **Create a GitHub token.** Go to GitHub → *Settings → Developer settings →
@@ -92,6 +111,10 @@ GitHub UI and commit. The next page load picks it up.
 ---
 
 ## What is verified, and what is not
+
+Reproduced here: a build of `main` fails with the npm ENOENT above, while a
+build of the correct branch succeeds — confirming the failure is the branch, not
+the code.
 
 Verified here: production start from an unrelated working directory, GitHub
 storage reading published content from the live API, disk storage round-trips,

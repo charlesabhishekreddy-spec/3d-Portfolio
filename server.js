@@ -30,7 +30,14 @@ const storage=createStorage({
 const password=process.env.ADMIN_PASSWORD;
 const digest=s=>createHash('sha256').update(s).digest();
 function auth(req,res,next){const token=req.headers.cookie?.split('; ').find(x=>x.startsWith('portfolio_session='))?.split('=')[1]; if(!token||!sessions.has(token)||sessions.get(token)<Date.now())return res.status(401).json({error:'Please sign in.'});next();}
-app.get('/api/health',(req,res)=>res.json({ok:true,admin:Boolean(password)}));
+app.get('/api/health',(req,res)=>res.json({
+  ok:true,
+  admin:Boolean(password),
+  // 'github' survives free-tier sleep and redeploys; 'disk' does not unless a
+  // persistent volume is attached. Surfaced in the admin so a misconfigured
+  // deploy is obvious rather than silently losing saved content.
+  storage:storage.mode,
+}));
 app.get('/api/content',async(req,res)=>{try{res.json(await storage.read());}catch(error){console.error(error);res.status(500).json({error:'Could not read your content.'});}});
 app.post('/api/login',rateLimit({windowMs:900000,limit:10,standardHeaders:true,legacyHeaders:false}), (req,res)=>{if(!password)return res.status(503).json({error:'Admin is not configured yet. Set ADMIN_PASSWORD on the server and restart to enable private access.'});if(typeof req.body.password!=='string'||!timingSafeEqual(digest(req.body.password),digest(password)))return res.status(401).json({error:'That password is not correct.'});const token=randomBytes(32).toString('hex');sessions.set(token,Date.now()+8*3600000);res.cookie('portfolio_session',token,{httpOnly:true,sameSite:'strict',secure:process.env.NODE_ENV==='production',maxAge:8*3600000});res.json({ok:true});});
 app.get('/api/session',auth,(req,res)=>res.json({ok:true}));

@@ -3,6 +3,13 @@
 # DEPLOY: push the branch, then in Render choose New → Blueprint and point it
 # at this repository. Render reads this file and creates the service for you.
 #
+# ⚠️  THE BRANCH MATTERS. This repository's default branch (`main`) contains
+#     only a README — the app lives on the branch named below. If Render builds
+#     `main` instead, the build fails with:
+#       npm error enoent Could not read package.json
+#     Fix it in the dashboard: Settings → Build & Deploy → Branch → pick the
+#     branch below → Save. Nothing in the code is wrong.
+#
 # This is the FREE configuration. It uses no disk, which is only safe because
 # content and images are stored in the GitHub repository (see storage.js) rather
 # than on local disk. Free services sleep after 15 idle minutes and take roughly
@@ -19,7 +26,7 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
-        value: "22.16.0"
+        value: "22"
       - key: NODE_ENV
         value: production
       # ── Your private studio password. Set this in the Render dashboard.
